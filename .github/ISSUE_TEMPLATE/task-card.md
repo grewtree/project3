@@ -9,7 +9,9 @@ assignees: ''
 
 ## Task Card
 
-**Assignee** :  이름
-
 #### Job Description
 > 작업 내용을 적어주세요.
+
+#### todo
+
+#### estimated time

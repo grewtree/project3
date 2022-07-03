@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+            crossorigin="anonymous">
+        <link href="../static/css/main.css" rel="stylesheet">
+
+        <title>실업자 수 예측모델</title>
+
+    </head>
+    <body>
+        <!-- nav 바 -->
+        <nav class="navbar fixed-top navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand">실업자 수 예측모델</a>
+            </div>
+        </nav>
+
+        <!-- main contents -->
+        <div class="container" style="text-align: center;">
+            <div class="container" style="text-align : center;">
+                <img src="../static/img/인플레이션.jpg" height="400">
+                <strong>
+                    <h2 style="padding:20px 0px 0px 0px">치솟는 물가, 얼어붙는 경제..<br>
+                        실업자 수는 어떻게 될까요?</h2>
+                </strong>
+                <div class="container" style="text-align : center;">
+                    <br>
+                    <h4>LightGBM 모델로 실업자 수 예측하기</h4><br>
+
+                    <div class="container" style="text-align:center;">
+                        <div class="box">
+                            <p>2022년 6월 기준,
+                                <br>
+                                코스피지수는 <b>2703.24</b>,
+                                <br>
+                                기준금리는 <b>1.75%</b>, 환율은 <b>1236.8원</b>,
+                                <br>
+                                국제유가(두바이유)는 <b>102.8달러</b>,
+                                <br>
+                                생산자물가지수는 <b>118</b>,
+                                <br>
+                                소비자물가지수는 <b>106</b> 입니다.
+                                <br>
+                            </p>
+                        </div>
+
+                        <!-- insert data -->
+                        <form action="/res/" method="get">
+                            예측할 지역을 선택하세요.
+                            <br>
+                            <select name="location">
+                                <option value="서울특별시">서울특별시</option>
+                                <option value="부산광역시">부산광역시</option>
+                                <option value="대구광역시">대구광역시</option>
+                                <option value="인천광역시">인천광역시</option>
+                                <option value="광주광역시">광주광역시</option>
+                                <option value="대전광역시">대전광역시</option>
+                                <option value="울산광역시">울산광역시</option>
+                                <option value="세종특별자치시">세종특별자치시</option>
+                                <option value="경기도">경기도</option>
+                                <option value="강원도">강원도</option>
+                                <option value="충청북도">충청북도</option>
+                                <option value="충청남도">충청남도</option>
+                                <option value="전라북도">전라북도</option>
+                                <option value="전라남도">전라남도</option>
+                                <option value="경상북도">경상북도</option>
+                                <option value="경상남도">경상남도</option>
+                                <option value="제주특별자치도">제주특별자치도</option>
+
+                            </select><br><br>
+
+                            알고 싶은 시점을 선택하세요.
+                            <br>
+                            <select name="month">
+                                <option value="1">1월</option>
+                                <option value="2">2월</option>
+                                <option value="3">3월</option>
+                                <option value="4">4월</option>
+                                <option value="5">5월</option>
+                                <option value="6">6월</option>
+                                <option value="7">7월</option>
+                                <option value="8">8월</option>
+                                <option value="9">9월</option>
+                                <option value="10">10월</option>
+                                <option value="11">11월</option>
+                                <option value="12">12월</option>
+                            </select><br><br>
+
+                            <i>(* 버튼을 움직여 숫자를 입력할 수 있습니다.)</i>
+                            <br><br>
+                            코스피지수를 입력하세요.
+                            <br>
+                            <input
+                                type="range"
+                                name="kospi"
+                                value="2700"
+                                min="1500"
+                                max="3000"
+                                step="0.5"
+                                oninput="this.nextElementSibling.value = this.value">
+                            <output>2700</output><br>
+
+                            기준금리(%)를 입력하세요.
+                            <br>
+                            <input
+                                type="range"
+                                name="interest"
+                                value="1.75"
+                                min="0.0"
+                                max="5.0"
+                                step="0.25"
+                                oninput="this.nextElementSibling.value = this.value">
+                            <output>1.75</output><br>
+
+                            원달러 환율(원)을 입력하세요.<br>
+                            <input
+                                type="range"
+                                name="rate"
+                                value="1200"
+                                min="900"
+                                max="1500"
+                                step="0.5"
+                                oninput="this.nextElementSibling.value = this.value">
+                            <output>1200</output>
+                            <br>
+
+                            유가(두바이유)(달러)를 입력하세요.
+                            <br>
+                            <input
+                                type="range"
+                                name="oilprice"
+                                value="102"
+                                min="80"
+                                max="130"
+                                step="0.5"
+                                oninput="this.nextElementSibling.value = this.value">
+                            <output>102</output><br>
+
+                            생산자물가지수를 입력하세요.<br>
+                            <input
+                                type="range"
+                                name="producer"
+                                value="118"
+                                min="80"
+                                max="150"
+                                oninput="this.nextElementSibling.value = this.value">
+                            <output>118</output>
+                            <br>
+
+                            소비자물가지수를 입력하세요.
+                            <br>
+                            <input
+                                type="range"
+                                name="consumer"
+                                value="106"
+                                min="80"
+                                max="150"
+                                oninput="this.nextElementSibling.value = this.value">
+                            <output>106</output><br><br>
+                            <button type="submit">예측하기</button>
+                        </form>
+                        <br><br>
+
+                        <!--구글 데이터스튜디오-->
+                        <div class="container">
+                        <iframe
+                            width="800"
+                            height="600"
+                            src="https://datastudio.google.com/embed/reporting/3732b21c-86a3-4622-ac5c-c30193a951ad/page/7TLwC"
+                            frameborder="0"
+                            style="border:0"
+                            allowfullscreen="allowfullscreen"></iframe></div>
+
+                        <!-- footer -->
+                        <div class="jumbotron text-center mt-5 mb-0">
+                            <h5 class="text-secondary">데이터분석 프로젝트</h5>
+                            <p>Made by
+                                <span class="text-primary">chris</span></p>
+                        </div>
+                    </body>
+                </html>
